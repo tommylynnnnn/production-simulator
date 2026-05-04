@@ -1,10 +1,72 @@
 /* ========================= styles.css ========================= */
-body { font-family: Arial; background:#111; color:#fff; margin:0; }
+body {
+  font-family: Arial;
+  margin:0;
+  background: linear-gradient(135deg, #ff1493, #8a2be2, #111);
+  color:#fff;
+}
+
+.title {
+  text-align:center;
+  font-size:40px;
+  text-shadow:0 0 10px #ff69b4;
+}
+
 .container { display:flex; height:100vh; }
-.panel { padding:15px; overflow:auto; }
-.left { width:35%; background:#1a1a1a; }
-.right { flex:1; }
-h2 { margin-top:0; }
-select, button { margin:5px 0; padding:5px; }
-.queen { margin-bottom:10px; padding:5px; border-bottom:1px solid #333; }
-.track { font-size:12px; color:#aaa; }
+
+.panel {
+  padding:15px;
+  overflow:auto;
+}
+
+.left {
+  width:35%;
+  background: rgba(0,0,0,0.6);
+  border-right:2px solid #ff69b4;
+}
+
+.right {
+  flex:1;
+  background: rgba(0,0,0,0.4);
+}
+
+h2, h3 {
+  text-shadow:0 0 5px #ff69b4;
+}
+
+select, button {
+  margin:5px 0;
+  padding:6px;
+  border-radius:6px;
+  border:none;
+}
+
+.mainBtn {
+  background:#ff1493;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.mainBtn:hover {
+  background:#ff69b4;
+}
+
+.queen {
+  margin-bottom:12px;
+  padding:8px;
+  border-radius:10px;
+  background: rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.2);
+}
+
+.track {
+  font-size:12px;
+  color:#ccc;
+}
+
+.performance {
+  font-size:12px;
+  font-weight:bold;
+  margin-top:3px;
+}

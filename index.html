@@ -10,7 +10,7 @@
 <body>
 
 <div id="startScreen">
-  <h1>RPDR Simulator</h1>
+  <h1 class="title">RPDR Simulator</h1>
 
   <h2>Select Queens</h2>
   <div id="queenSelect"></div>
@@ -22,7 +22,7 @@
     <option value="nonelim">Non-Elimination</option>
   </select>
 
-  <button onclick="startGame()">Start Season</button>
+  <button onclick="startGame()" class="mainBtn">Start Season</button>
 </div>
 
 <div id="game" style="display:none;">
@@ -38,7 +38,7 @@
       <h3>Challenge</h3>
       <select id="challengeSelect"></select>
 
-      <button onclick="confirmJudging()">Confirm Judging</button>
+      <button onclick="confirmJudging()" class="mainBtn">Confirm Judging</button>
 
       <div id="lipsyncSection" style="display:none;">
         <h3>Lip Sync</h3>

@@ -1,1 +1,10 @@
-
+/* ========================= styles.css ========================= */
+body { font-family: Arial; background:#111; color:#fff; margin:0; }
+.container { display:flex; height:100vh; }
+.panel { padding:15px; overflow:auto; }
+.left { width:35%; background:#1a1a1a; }
+.right { flex:1; }
+h2 { margin-top:0; }
+select, button { margin:5px 0; padding:5px; }
+.queen { margin-bottom:10px; padding:5px; border-bottom:1px solid #333; }
+.track { font-size:12px; color:#aaa; }

@@ -1,5 +1,4 @@
-// ========================= game.js =========================
-// ---------------- DATA ----------------
+// DATA
 const allQueens = [
   { name:"Luna Star", stats:{comedy:7,dance:9,fashion:8,acting:6}},
   { name:"Ruby Blaze", stats:{comedy:9,dance:6,fashion:7,acting:8}},
@@ -10,8 +9,8 @@ const allQueens = [
 const challenges = ["Acting","Comedy","Ball","Rusical","Design"];
 
 const formatRules = {
-  normal: { elimination: true, type: "btm2" },
-  allstars: { elimination: true, type: "top2" },
+  normal: { elimination: true },
+  allstars: { elimination: true },
   nonelim: { elimination: false }
 };
 
@@ -20,7 +19,7 @@ let currentEpisode = 1;
 let format = "normal";
 let lipsyncPair = [];
 
-// ---------------- INIT ----------------
+// INIT
 function initQueenSelect(){
   const div = document.getElementById("queenSelect");
   div.innerHTML = "";
@@ -37,7 +36,7 @@ function initChallenges(){
   });
 }
 
-// ---------------- PERFORMANCE ----------------
+// PERFORMANCE
 function getPerformance(score){
   if(score >= 9) return "SLAYED";
   if(score >= 8) return "GREAT";
@@ -55,10 +54,9 @@ function calculateScore(q, challenge){
   return q.stats[key] || 5;
 }
 
-// ---------------- GAME START ----------------
+// START
 function startGame(){
   format = document.getElementById("formatSelect").value;
-
   const checked = document.querySelectorAll("#queenSelect input:checked");
 
   selectedQueens = Array.from(checked).map(input => {
@@ -67,8 +65,7 @@ function startGame(){
       name: base.name,
       stats: base.stats,
       track: [],
-      eliminated: false,
-      performance: ""
+      eliminated: false
     };
   });
 
@@ -80,14 +77,11 @@ function startGame(){
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("game").style.display = "block";
 
-  currentEpisode = 1;
-  document.getElementById("episodeTitle").innerText = `Episode ${currentEpisode}`;
-
   initChallenges();
   renderQueens();
 }
 
-// ---------------- RENDER ----------------
+// RENDER
 function renderQueens(){
   const div = document.getElementById("queenList");
   const challenge = document.getElementById("challengeSelect").value;
@@ -99,8 +93,6 @@ function renderQueens(){
 
     const score = calculateScore(q, challenge);
     const perf = getPerformance(score);
-
-    q.performance = perf;
 
     div.innerHTML += `
       <div class="queen">
@@ -119,9 +111,8 @@ function renderQueens(){
   });
 }
 
-// ---------------- JUDGING ----------------
+// JUDGING
 function confirmJudging(){
-  const rule = formatRules[format];
   let btm = [];
 
   selectedQueens.forEach((q,i) => {
@@ -133,7 +124,7 @@ function confirmJudging(){
     if(placement === "BTM2") btm.push(q);
   });
 
-  if(rule.elimination && btm.length === 2){
+  if(formatRules[format].elimination && btm.length === 2){
     lipsyncPair = btm;
     showLipSync();
   } else {
@@ -141,7 +132,7 @@ function confirmJudging(){
   }
 }
 
-// ---------------- LIPSYNC ----------------
+// LIPSYNC
 function showLipSync(){
   document.getElementById("lipsyncSection").style.display = "block";
   document.getElementById("lipsyncText").innerText =
@@ -149,8 +140,7 @@ function showLipSync(){
 }
 
 function resolveLipSync(result){
-  if(result === "doubleShantay"){
-  } else if(result === "doubleSashay"){
+  if(result === "doubleSashay"){
     lipsyncPair[0].eliminated = true;
     lipsyncPair[1].eliminated = true;
   } else if(result === "queen1"){
@@ -163,12 +153,46 @@ function resolveLipSync(result){
   renderQueens();
 }
 
-// ---------------- NEXT EP ----------------
+// FINALE
+function checkForFinale(){
+  const active = selectedQueens.filter(q => !q.eliminated);
+  if(active.length <= 4){
+    startFinale(active);
+    return true;
+  }
+  return false;
+}
+
+function startFinale(finalists){
+  const div = document.getElementById("queenList");
+  div.innerHTML = `<h2>FINALE</h2>`;
+
+  finalists.forEach((q,i) => {
+    div.innerHTML += `
+      <div class="queen">
+        <strong>${q.name}</strong><br>
+        <button onclick="crownWinner(${i})">👑 Crown</button>
+      </div>
+    `;
+  });
+}
+
+function crownWinner(index){
+  const finalists = selectedQueens.filter(q => !q.eliminated);
+  const winner = finalists[index];
+
+  document.getElementById("queenList").innerHTML =
+    `<h1>👑 ${winner.name} WINS THE SEASON! 👑</h1>`;
+}
+
+// NEXT EP
 function nextEpisode(){
+  if(checkForFinale()) return;
+
   currentEpisode++;
   document.getElementById("episodeTitle").innerText = `Episode ${currentEpisode}`;
   renderQueens();
 }
 
-// ---------------- RUN ----------------
+// RUN
 initQueenSelect();

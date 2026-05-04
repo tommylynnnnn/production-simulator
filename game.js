@@ -1,8 +1,10 @@
 // ========================= game.js =========================
 // ---------------- DATA ----------------
 const allQueens = [
-  "Luna Star","Ruby Blaze","Velvet Noir","Crystal Edge",
-  "Nova Lux","Scarlet Kiss","Opal Dream","Zara Vibe"
+  { name:"Luna Star", stats:{comedy:7,dance:9,fashion:8,acting:6}},
+  { name:"Ruby Blaze", stats:{comedy:9,dance:6,fashion:7,acting:8}},
+  { name:"Velvet Noir", stats:{comedy:6,dance:7,fashion:9,acting:7}},
+  { name:"Crystal Edge", stats:{comedy:5,dance:8,fashion:6,acting:9}}
 ];
 
 const challenges = ["Acting","Comedy","Ball","Rusical","Design"];
@@ -22,8 +24,8 @@ let lipsyncPair = [];
 function initQueenSelect(){
   const div = document.getElementById("queenSelect");
   div.innerHTML = "";
-  allQueens.forEach(q => {
-    div.innerHTML += `<label><input type="checkbox" value="${q}"> ${q}</label><br>`;
+  allQueens.forEach((q,i) => {
+    div.innerHTML += `<label><input type="checkbox" value="${i}"> ${q.name}</label><br>`;
   });
 }
 
@@ -35,17 +37,40 @@ function initChallenges(){
   });
 }
 
+// ---------------- PERFORMANCE ----------------
+function getPerformance(score){
+  if(score >= 9) return "SLAYED";
+  if(score >= 8) return "GREAT";
+  if(score >= 7) return "GOOD";
+  if(score >= 6) return "FINE";
+  if(score >= 5) return "OK";
+  if(score >= 4) return "BAD";
+  return "FLOPPED";
+}
+
+function calculateScore(q, challenge){
+  let key = challenge.toLowerCase();
+  if(key === "rusical") key = "acting";
+  if(key === "design" || key === "ball") key = "fashion";
+  return q.stats[key] || 5;
+}
+
 // ---------------- GAME START ----------------
 function startGame(){
   format = document.getElementById("formatSelect").value;
 
   const checked = document.querySelectorAll("#queenSelect input:checked");
 
-  selectedQueens = Array.from(checked).map(q => ({
-    name: q.value,
-    track: [],
-    eliminated: false
-  }));
+  selectedQueens = Array.from(checked).map(input => {
+    const base = allQueens[input.value];
+    return {
+      name: base.name,
+      stats: base.stats,
+      track: [],
+      eliminated: false,
+      performance: ""
+    };
+  });
 
   if(selectedQueens.length < 2){
     alert("Pick at least 2 queens");
@@ -65,14 +90,22 @@ function startGame(){
 // ---------------- RENDER ----------------
 function renderQueens(){
   const div = document.getElementById("queenList");
+  const challenge = document.getElementById("challengeSelect").value;
+
   div.innerHTML = "";
 
   selectedQueens.forEach((q, i) => {
     if(q.eliminated) return;
 
+    const score = calculateScore(q, challenge);
+    const perf = getPerformance(score);
+
+    q.performance = perf;
+
     div.innerHTML += `
       <div class="queen">
         <strong>${q.name}</strong><br>
+        <div class="performance">${perf}</div>
         <select id="place-${i}">
           <option>WIN</option>
           <option>HIGH</option>
@@ -117,7 +150,6 @@ function showLipSync(){
 
 function resolveLipSync(result){
   if(result === "doubleShantay"){
-    // nobody eliminated
   } else if(result === "doubleSashay"){
     lipsyncPair[0].eliminated = true;
     lipsyncPair[1].eliminated = true;

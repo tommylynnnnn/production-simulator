@@ -1,1 +1,59 @@
+<!-- ========================= index.html ========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPDR Simulator</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
+<div id="startScreen">
+  <h1>RPDR Simulator</h1>
+
+  <h2>Select Queens</h2>
+  <div id="queenSelect"></div>
+
+  <h2>Format</h2>
+  <select id="formatSelect">
+    <option value="normal">Normal</option>
+    <option value="allstars">All Stars</option>
+    <option value="nonelim">Non-Elimination</option>
+  </select>
+
+  <button onclick="startGame()">Start Season</button>
+</div>
+
+<div id="game" style="display:none;">
+  <div class="container">
+    <div class="panel left">
+      <h2>Queens</h2>
+      <div id="queenList"></div>
+    </div>
+
+    <div class="panel right">
+      <h2 id="episodeTitle">Episode 1</h2>
+
+      <h3>Challenge</h3>
+      <select id="challengeSelect"></select>
+
+      <button onclick="confirmJudging()">Confirm Judging</button>
+
+      <div id="lipsyncSection" style="display:none;">
+        <h3>Lip Sync</h3>
+        <div id="lipsyncText"></div>
+        <button onclick="resolveLipSync('queen1')">Save Queen 1</button>
+        <button onclick="resolveLipSync('queen2')">Save Queen 2</button>
+        <button onclick="resolveLipSync('doubleShantay')">Double Shantay</button>
+        <button onclick="resolveLipSync('doubleSashay')">Double Sashay</button>
+      </div>
+
+      <button onclick="nextEpisode()">Next Episode</button>
+    </div>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
